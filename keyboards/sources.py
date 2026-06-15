@@ -1,0 +1,39 @@
+from aiogram.types import (
+    InlineKeyboardMarkup,
+    InlineKeyboardButton
+)
+
+sources_keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text="VK",
+                callback_data="source_vk"
+            ),
+            InlineKeyboardButton(
+                text="Telegram",
+                callback_data="source_tg"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="Instagram",
+                callback_data="source_inst"
+            ),
+            InlineKeyboardButton(
+                text="Звонок",
+                callback_data="source_call"
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="Сайт",
+                callback_data="source_site"
+            ),
+            InlineKeyboardButton(
+                text="MAX",
+                callback_data="source_max"
+            )
+        ]
+    ]
+)

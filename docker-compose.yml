@@ -1,0 +1,15 @@
+services:
+
+  dr_chistov:
+
+    build: .
+
+    container_name: dr_chistov
+
+    restart: unless-stopped
+
+    volumes:
+      - ./data:/app/data
+
+    env_file:
+      - .env
