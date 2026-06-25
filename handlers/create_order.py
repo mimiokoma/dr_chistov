@@ -540,8 +540,6 @@ async def confirm_order(
 
     text = build_order_text(data)
 
-    services = []
-
     if data.get("photo"):
 
         await callback.bot.send_photo(
@@ -558,8 +556,6 @@ async def confirm_order(
             text=text,
             reply_markup=order_chat_keyboard()
         )
-
-
 
     await book_slot(
         data["date"],
