@@ -571,17 +571,12 @@ async def confirm_order(
     await callback.answer()
 
 @router.callback_query(
-    F.data.startswith("done_")
+    F.data == "done_order"
 )
 async def done_order(
         callback: CallbackQuery
 ):
-    order_id = int(
-        callback.data.replace(
-            "done_",
-            ""
-        )
-    )
+
     text = (
         callback.message.caption
         or

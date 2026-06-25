@@ -200,6 +200,7 @@ async def unbook_slot(date: str, time: str):
         )
         await db.commit()
 
+
 async def add_completed_order(
         amount: int
 ):

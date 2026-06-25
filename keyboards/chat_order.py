@@ -11,14 +11,13 @@ def order_chat_keyboard():
             [
                 InlineKeyboardButton(
                     text="✅ Выполнено",
-                    callback_data=f"done_"
+                    callback_data="done_order"
                 )
             ],
-
             [
                 InlineKeyboardButton(
                     text="❌ Отмена",
-                    callback_data=f"cancel_"
+                    callback_data="cancel_order"
                 )
             ]
         ]
