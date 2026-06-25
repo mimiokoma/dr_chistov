@@ -8,7 +8,7 @@ from database.requests import (
 )
 
 from database.requests import (
-    create_order,
+    create_order as db_create_order,
     save_message_info
 )
 
@@ -550,7 +550,7 @@ async def confirm_order(
     for service_id, qty in data["quantities"].items():
         services.append(f"{service_id}:{qty}")
 
-    order_id = await create_order(
+    order_id = await db_create_order(
         service=";".join(services),
         date=data["date"],
         time=data["time"],
@@ -660,17 +660,21 @@ async def done_order(
     )
 
 @router.callback_query(
+    F.data.in_({"cancel_order"}) |
     F.data.startswith("cancel_")
 )
 async def cancel_order(
         callback: CallbackQuery
 ):
-    order_id = int(
-        callback.data.replace(
-            "cancel_",
-            ""
+    order_id = None
+
+    if callback.data.startswith("cancel_") and callback.data != "cancel_order":
+        order_id = int(
+            callback.data.replace(
+                "cancel_",
+                ""
+            )
         )
-    )
     text = (
         callback.message.caption
         or
