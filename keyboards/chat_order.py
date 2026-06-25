@@ -14,18 +14,7 @@ def order_chat_keyboard(order_id: int):
                     callback_data=f"done_{order_id}"
                 )
             ],
-            [
-                InlineKeyboardButton(
-                    text="✏️ Изменить",
-                    callback_data=f"edit_{order_id}"
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="📅 Перенести",
-                    callback_data=f"move_{order_id}"
-                )
-            ],
+
             [
                 InlineKeyboardButton(
                     text="❌ Отмена",

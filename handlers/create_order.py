@@ -7,11 +7,6 @@ from database.requests import (
     unbook_slot
 )
 
-from database.requests import (
-    create_order as db_create_order,
-    save_message_info
-)
-
 from keyboards.chat_order import (
     order_chat_keyboard
 )
@@ -550,7 +545,7 @@ async def confirm_order(
     for service_id, qty in data["quantities"].items():
         services.append(f"{service_id}:{qty}")
 
-    order_id = await db_create_order(
+    order_id = await create_order(
         service=";".join(services),
         date=data["date"],
         time=data["time"],
@@ -580,11 +575,7 @@ async def confirm_order(
             reply_markup=order_chat_keyboard(order_id)
         )
 
-    await save_message_info(
-        order_id,
-        msg.chat.id,
-        msg.message_id
-    )
+
 
     await book_slot(
         data["date"],
@@ -666,20 +657,7 @@ async def done_order(
 async def cancel_order(
         callback: CallbackQuery
 ):
-    order_id = None
-
-    if callback.data.startswith("cancel_") and callback.data != "cancel_order":
-        order_id = int(
-            callback.data.replace(
-                "cancel_",
-                ""
-            )
-        )
-    text = (
-        callback.message.caption
-        or
-        callback.message.text
-    )
+    text = callback.message.caption or callback.message.text
 
     date = None
     time = None
