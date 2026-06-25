@@ -542,37 +542,21 @@ async def confirm_order(
 
     services = []
 
-    for service_id, qty in data["quantities"].items():
-        services.append(f"{service_id}:{qty}")
-
-    order_id = await create_order(
-        service=";".join(services),
-        date=data["date"],
-        time=data["time"],
-        client_name=data["client_name"],
-        client_phone=data["client_phone"],
-        address=data["address"],
-        source=data["source"],
-        price=data["price"],
-        comment=data["comment"],
-        photos=data.get("photo")
-    )
-
     if data.get("photo"):
 
-        msg = await callback.bot.send_photo(
+        await callback.bot.send_photo(
             chat_id=WORK_CHAT_ID,
             photo=data["photo"],
             caption=text,
-            reply_markup=order_chat_keyboard(order_id)
+            reply_markup=order_chat_keyboard()
         )
 
     else:
 
-        msg = await callback.bot.send_message(
+        await callback.bot.send_message(
             chat_id=WORK_CHAT_ID,
             text=text,
-            reply_markup=order_chat_keyboard(order_id)
+            reply_markup=order_chat_keyboard()
         )
 
 
