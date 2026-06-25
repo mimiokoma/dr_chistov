@@ -4,6 +4,9 @@ from handlers.profit import (
     router as profit_router
 )
 
+from handlers.edit_order import (
+    router as edit_order_router
+)
 
 from aiogram import Bot, Dispatcher
 
@@ -35,6 +38,9 @@ async def main():
     dp.include_router(free_dates_router)
     dp.include_router(
         profit_router
+    )
+    dp.include_router(
+        edit_order_router
     )
 
     await dp.start_polling(bot)

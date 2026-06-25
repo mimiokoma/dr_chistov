@@ -3,22 +3,24 @@ from aiogram.types import (
     InlineKeyboardButton
 )
 
-
-def build_dates_keyboard(dates):
+def build_dates_keyboard(
+    dates,
+    prefix="order_date"
+):
 
     keyboard = []
 
     for (date,) in dates:
 
-        short_date = ".".join(
+        short = ".".join(
             date.split(".")[:2]
         )
 
         keyboard.append(
             [
                 InlineKeyboardButton(
-                    text=f"📅 {short_date}",
-                    callback_data=f"order_date_{date}"
+                    text=f"📅 {short}",
+                    callback_data=f"{prefix}_{date}"
                 )
             ]
         )

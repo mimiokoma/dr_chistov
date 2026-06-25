@@ -1,7 +1,15 @@
+import re
+
 from aiogram import Router, F
 
 from database.requests import (
-    book_slot
+    book_slot,
+    unbook_slot
+)
+
+from database.requests import (
+    create_order,
+    save_message_info
 )
 
 from keyboards.chat_order import (
@@ -537,22 +545,46 @@ async def confirm_order(
 
     text = build_order_text(data)
 
+    services = []
+
+    for service_id, qty in data["quantities"].items():
+        services.append(f"{service_id}:{qty}")
+
+    order_id = await create_order(
+        service=";".join(services),
+        date=data["date"],
+        time=data["time"],
+        client_name=data["client_name"],
+        client_phone=data["client_phone"],
+        address=data["address"],
+        source=data["source"],
+        price=data["price"],
+        comment=data["comment"],
+        photos=data.get("photo")
+    )
+
     if data.get("photo"):
 
-        await callback.bot.send_photo(
+        msg = await callback.bot.send_photo(
             chat_id=WORK_CHAT_ID,
             photo=data["photo"],
             caption=text,
-            reply_markup=order_chat_keyboard()
+            reply_markup=order_chat_keyboard(order_id)
         )
 
     else:
 
-        await callback.bot.send_message(
+        msg = await callback.bot.send_message(
             chat_id=WORK_CHAT_ID,
             text=text,
-            reply_markup=order_chat_keyboard()
+            reply_markup=order_chat_keyboard(order_id)
         )
+
+    await save_message_info(
+        order_id,
+        msg.chat.id,
+        msg.message_id
+    )
 
     await book_slot(
         data["date"],
@@ -573,7 +605,12 @@ async def confirm_order(
 async def done_order(
         callback: CallbackQuery
 ):
-
+    order_id = int(
+        callback.data.replace(
+            "done_",
+            ""
+        )
+    )
     text = (
         callback.message.caption
         or
@@ -586,15 +623,10 @@ async def done_order(
 
         if "💰" in line:
 
-            digits = "".join(
-                filter(
-                    str.isdigit,
-                    line
-                )
-            )
+            numbers = re.findall(r"\d+", line)
 
-            if digits:
-                amount = int(digits)
+            if numbers:
+                amount = sum(map(int, numbers))
 
             break
 
@@ -633,12 +665,30 @@ async def done_order(
 async def cancel_order(
         callback: CallbackQuery
 ):
-
+    order_id = int(
+        callback.data.replace(
+            "cancel_",
+            ""
+        )
+    )
     text = (
         callback.message.caption
         or
         callback.message.text
     )
+
+    date = None
+    time = None
+
+    for line in text.split("\n"):
+        if line.startswith("📅"):
+            date = line.replace("📅", "").strip()
+
+        if line.startswith("⏰"):
+            time = line.replace("⏰", "").strip()
+
+    if date and time:
+        await unbook_slot(date, time)
 
     await callback.message.edit_reply_markup(
         reply_markup=None

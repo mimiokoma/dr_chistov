@@ -64,6 +64,9 @@ async def init_db():
             price TEXT,
             comment TEXT,
             photos TEXT,
+            status TEXT DEFAULT 'new',
+            message_id INTEGER,
+            chat_id INTEGER,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """)

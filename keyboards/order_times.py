@@ -3,8 +3,10 @@ from aiogram.types import (
     InlineKeyboardButton
 )
 
-
-def build_times_keyboard(times):
+def build_times_keyboard(
+    times,
+    prefix="order_time"
+):
 
     keyboard = []
 
@@ -15,7 +17,7 @@ def build_times_keyboard(times):
         row.append(
             InlineKeyboardButton(
                 text=time,
-                callback_data=f"order_time_{time}"
+                callback_data=f"{prefix}_{time}"
             )
         )
 

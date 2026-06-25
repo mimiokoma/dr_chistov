@@ -34,3 +34,21 @@ class CreateOrder(StatesGroup):
     photo = State()
 
     confirm = State()
+
+class EditOrderState(StatesGroup):
+
+    choosing_field = State()
+
+    editing_price = State()
+
+    editing_client = State()
+
+    editing_phone = State()
+
+    editing_address = State()
+
+    editing_comment = State()
+
+    moving_date = State()
+
+    moving_time = State()

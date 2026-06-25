@@ -4,20 +4,32 @@ from aiogram.types import (
 )
 
 
-def order_chat_keyboard():
+def order_chat_keyboard(order_id: int):
 
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
                     text="✅ Выполнено",
-                    callback_data="done_order"
+                    callback_data=f"done_{order_id}"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="✏️ Изменить",
+                    callback_data=f"edit_{order_id}"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="📅 Перенести",
+                    callback_data=f"move_{order_id}"
                 )
             ],
             [
                 InlineKeyboardButton(
                     text="❌ Отмена",
-                    callback_data="cancel_order"
+                    callback_data=f"cancel_{order_id}"
                 )
             ]
         ]
