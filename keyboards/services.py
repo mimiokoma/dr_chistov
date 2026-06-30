@@ -6,7 +6,8 @@ SERVICES = {
     "sofa": "🛋 Диван",
     "mattress": "🛏 Матрас",
     "armchair": "💺 Кресло",
-    "chairs": "🪑 Стулья"
+    "chairs": "🪑 Стулья",
+    "kover": "📃 Ковёр/ковролин"
 }
 
 

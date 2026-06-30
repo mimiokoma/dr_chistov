@@ -449,7 +449,8 @@ def build_order_text(data):
             "sofa": "🛋 Диван",
             "mattress": "🛏 Матрас",
             "armchair": "💺 Кресло",
-            "chairs": "🪑 Стулья"
+            "chairs": "🪑 Стулья",
+            "kover": "📃 Ковёр/ковролин"
         }
 
         services_text += (
